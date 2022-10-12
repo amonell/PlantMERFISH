@@ -7,7 +7,7 @@ import numpy as np
 from anndata import AnnData
 from tqdm import tqdm
 
-import stats
+import src.stats as stats
 
 
 def create_scanpy_object(cellgene, celldata, positions):

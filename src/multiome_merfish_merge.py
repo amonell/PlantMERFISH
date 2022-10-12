@@ -6,7 +6,7 @@ import diopy
 import anndata as ad
 from harmonypy import run_harmony
 import shutil
-import src.hanqing_integrate
+import src.hanqing_integrate as hanqing_integrate
 import anndata
 from scipy.sparse import csr_matrix
 from tkinter import simpledialog
