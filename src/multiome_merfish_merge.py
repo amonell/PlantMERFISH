@@ -194,7 +194,7 @@ def plot_umap_merfish_rna(try_avr, experiment_name):
     return try_avr
 
 def move_figure_path(lfile, experiment_name):
-    source = r'C:\Users\amonell\Desktop\Scripts_Alex\MERSCOPE_PIPELINE\figures'
+    source = r'figures'
 
     destination = os.path.dirname(lfile)
     try:
@@ -212,7 +212,7 @@ def plot_clusters(a1, try_avr, experiment_name, lfile, destination, save = True)
     a1.obs['seurat_clusters'] = try_avr[try_avr.obs['experiment'] == experiment_name, :].obs['seurat_clusters_transfer'].tolist()
     sc.set_figure_params(dpi=75, dpi_save=300, facecolor='white')
     cluster_types = np.unique(a1.obs['seurat_clusters'])
-    source = r'C:\Users\amonell\Desktop\Scripts_Alex\MERSCOPE_PIPELINE\figures'
+    source = r'figures'
 
     for i in [experiment_name]:
         for j in range(len(cluster_types)):
@@ -227,7 +227,7 @@ def plot_clusters(a1, try_avr, experiment_name, lfile, destination, save = True)
                 sc.pl.embedding(embed_obj, basis='spatial', color= 'color_new', cmap = 'Reds', show=True, s = 5, title = i.capitalize() + ' Cluster ' + cluster_types[j], colorbar_loc=None, vmax = 1, vmin=-0.2)
                 
 def plot_motifs(partial_ad, motif_cols, destination):
-    source = r'C:\Users\amonell\Desktop\Scripts_Alex\MERSCOPE_PIPELINE\figures'
+    source = r'figures'
     try:
         os.mkdir(destination + os.path.sep + 'motif_images')
     except:
