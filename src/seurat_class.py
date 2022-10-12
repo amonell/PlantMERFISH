@@ -13,7 +13,7 @@ from scipy.stats import zscore
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import OneHotEncoder, normalize
 
-from .cca import cca, lsi_cca
+from src.cca import cca, lsi_cca
 
 CPU_COUNT = multiprocessing.cpu_count()
 

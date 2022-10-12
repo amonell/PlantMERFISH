@@ -6,7 +6,7 @@ import diopy
 import anndata as ad
 from harmonypy import run_harmony
 import shutil
-import hanqing_integrate
+import src.hanqing_integrate
 import anndata
 from scipy.sparse import csr_matrix
 from tkinter import simpledialog
@@ -246,7 +246,7 @@ def probe_r_or_scanpy():
     messagebox.showinfo("Locate","Please locate the scanpy or h5 format Seurat object after clicking ok")
     should_load = messagebox.askyesno("Do you want to load the object at path C:/Users/amonell/Downloads/combined_filtered.h5")
     if should_load == True:
-        adata_file = 'C:/Users/amonell/Downloads/combined_filtered.h5'
+        adata_file = 'DataPathogenPanel1/combined_filtered.h5'
     else:
         root = Tk()
         root.withdraw()

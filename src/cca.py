@@ -4,7 +4,7 @@ from sklearn.decomposition import TruncatedSVD
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils.extmath import safe_sparse_dot
 
-from lsi import tf_idf
+from src.lsi import tf_idf
 
 
 def top_features_idx(data, n_features):

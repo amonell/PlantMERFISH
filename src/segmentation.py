@@ -8,8 +8,8 @@ import pandas as pd
 from tqdm import tqdm
 from sklearn.neighbors import NearestNeighbors
 
-import config
-import stats
+import src.config
+import src.stats
 
 Overlap = namedtuple("Overlap", ["fov", "xslice", "yslice"])
 

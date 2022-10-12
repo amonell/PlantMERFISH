@@ -16,9 +16,9 @@ from tqdm import tqdm
 from scipy.linalg import norm
 from scipy.stats import pearsonr
 
-import config
-import plotting
-import fileio
+import src.config
+import src.plotting
+import src.fileio
 
 stats = {}
 savefile = None
