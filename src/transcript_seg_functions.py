@@ -22,6 +22,9 @@ import os
 import logging
 from cellpose import models, io
 import shutil
+from rtree import index
+import math
+import random
 
 class MERSCOPE_analyzer:
     def __init__(self, detected_transcripts, output_folder, merscope_region_folder, transcripts_interest):
@@ -360,24 +363,60 @@ def take_user_input():
     root = Tk()
     root.withdraw()
     folder_selected1 = filedialog.askdirectory()
-
-    messagebox.showinfo("Option","Next question appearing shortly")
+    messagebox.showinfo("Option","Please select an output folder for the experiment analysis results")
+    folder_selected = filedialog.askdirectory()
+    question = simpledialog.askstring("Input", "Input segmentation slices or auto-detect? ('y' for input slices)")
     try:
         detected_tanscripts = pd.read_csv(folder_selected1+os.path.sep+'detected_transcripts.csv')
     except:
         print('detected_transcripts.csv not found in the folder')
-    while True:
-        try:
-            answer = simpledialog.askstring("Input", "Slices to run segmentation on (separated by commas)")
-            answer = answer.replace(' ', '')
-            answer = answer.split(',')
-            answer = [float(i) for i in answer]   
-            break
-        except:
-            print('bad input, try again')
-            continue
+    if question == 'y':
+        while True:
+            try:
+                answer = simpledialog.askstring("Input", "Slices to run segmentation on (separated by commas)")
+                answer = answer.replace(' ', '')
+                answer = answer.split(',')
+                answer = [float(i) for i in answer]   
+                break
+            except:
+                print('bad input, try again')
+                continue
+    else:
+        answer = [float(p) for p in choose_cellpose_segmentation_slices(detected_tanscripts)]
     
-    messagebox.showinfo("Option","Please select an output folder for the experiment analysis results")
-    folder_selected = filedialog.askdirectory()
+
     return folder_selected1, detected_tanscripts, answer, folder_selected
 
+def choose_cellpose_segmentation_slices(detected_transcripts):
+    combinations_list = [{3}, {0}, {6}, {3, 4}, {5,6}, {0,1}, {3,4,5}, {0,1,2}, {3,4,5,6}, {1,2,3,4,5}, {1,2,3,4,5,6}, {0,1,2,3,4,5,6}]
+    best_value = None
+    best_comb = None
+    for comb in tqdm(combinations_list):
+        if len(comb) > 0:
+            subsetted_obj = detected_transcripts[detected_transcripts['global_z'].astype(int).isin(comb)]
+            xvalues = np.array(subsetted_obj['global_x'].tolist())
+            yvalues = np.array(subsetted_obj['global_y'].tolist())
+            lower_size = [i for i in range(0, int(len(xvalues)/200))]
+            [lower_size.append(i) for i in range(int(len(xvalues)/2)-int(len(xvalues)/200), int(len(xvalues)/2))]
+            [lower_size.append(i) for i in range(int(len(xvalues))-int(len(xvalues)/200), int(len(xvalues)))]
+
+            idx = index.Index()
+            for i in np.array(lower_size):
+                idx.insert(i, np.array([xvalues[i], yvalues[i]]))
+            #stochastically determine density
+            randomlist = random.sample(range(0, len(xvalues)), min(int(len(lower_size)/2), 5000))
+            avg_distances = []
+            for p in range(len(randomlist)):
+                all_neighbors = []
+                nn_obj = idx.nearest([xvalues[p], yvalues[p]], num_results = 25, objects=True)
+                for i in nn_obj:
+                    all_neighbors.append([math.sqrt(math.pow((xvalues[p] - i.bounds[0]),2) + math.pow((yvalues[p] - i.bounds[3]),2))])
+                avg_distances.append(np.mean(all_neighbors[1:]))
+            avg_distances = np.array(avg_distances) 
+            total_average = np.median(avg_distances)
+
+            #4 because that was the density the cellpose model was trained on
+            if best_value==None or (abs(4 - total_average) < best_value):
+                best_value = abs(4 - total_average)
+                best_comb = comb
+    return list(best_comb)
