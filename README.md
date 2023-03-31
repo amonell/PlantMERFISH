@@ -10,7 +10,7 @@ This repository contains code for analyzing Vizgen MERSCOPE data obtained for th
 
 - The Psuedotime_Multiome folder contains the code used to perform pseudotime with Palantir on the 10x Multiome Dataset. Instructions on how to create the necessary environment are supplied in the folder as well.
 
-- 
+- The smFISH_Quant folder contains the notebook used to identify bacterial colony locations and quantify genes images with smFISH in the MERSCOPE. Instructions on how to create the necessary environment to run this code are supplied in the folder as well.
 
 - load_obj.R can be used to convert a Seurat experiment object to a Scanpy Anndata object.
 
