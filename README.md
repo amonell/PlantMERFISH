@@ -8,6 +8,8 @@ This repository contains code for analyzing Vizgen MERSCOPE data obtained for th
 
 - The Merging_MERFISH_Objects.ipynb notebook takes a dataset containing scRNA-seq data, in this case, a 10x multiome dataset, and integrates it with a MERFISH dataset. This means that a joint UMAP is calculated, and both categorical and continuous observations from the reference dataset are transferred to the MERFISH Anndata.
 
+- load_obj.R can be used to convert a Seurat experiment object to a Scanpy Anndata object.
+
 - 
 # Requirements
 This code was developed using Python version 3.10.4. You can find the required Python packages in the requirements.txt file.
