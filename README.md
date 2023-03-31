@@ -13,4 +13,4 @@ This repository contains code for analyzing Vizgen MERSCOPE data obtained for th
 - Get_Transcript_Images.ipynb can be used to get images of different RNA species across a tissue section
 
 # Requirements
-This code was developed using Python version 3.10.4. You can find the required Python packages in the requirements.txt file.
+This code was developed using Python version 3.10.4. You can find the required Python packages for the general MERFISH data processing in the requirements.txt file.
